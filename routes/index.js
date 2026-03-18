@@ -14,9 +14,7 @@ router.get("/users", async (ctx, next) => {
   UserModel.hasMany(BookModel, {
     foreignKey: "userid",
   });
-  BookModel.belongsTo(CateModel, {
-    foreignKey: "cateid",
-  });
+
   let userList = await UserModel.findAll({
     include: [
       {
@@ -32,15 +30,18 @@ router.get("/users", async (ctx, next) => {
 });
 
 router.get("/json", async (ctx, next) => {
-  BookModel.belongsTo(UserModel, {
-    foreignKey: "userid",
-    targetKey: "id",
-  });
-
   let bookList = await BookModel.findAll({
-    include: {
-      model: UserModel,
+    where: {
+      userid: 2,
     },
+    include: [
+      {
+        model: UserModel,
+      },
+      {
+        model: CateModel,
+      },
+    ],
   });
   ctx.body = bookList;
 });

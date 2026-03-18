@@ -1,7 +1,6 @@
-const {
-  DataTypes
-} = require('sequelize');
-module.exports = sequelize => {
+const { DataTypes } = require("sequelize");
+
+module.exports = (sequelize) => {
   const attributes = {
     id: {
       type: DataTypes.INTEGER,
@@ -10,7 +9,7 @@ module.exports = sequelize => {
       comment: null,
       primaryKey: true,
       field: "id",
-      autoIncrement: true
+      autoIncrement: true,
     },
     name: {
       type: DataTypes.CHAR(255),
@@ -19,7 +18,7 @@ module.exports = sequelize => {
       comment: null,
       primaryKey: false,
       field: "name",
-      autoIncrement: false
+      autoIncrement: false,
     },
     userid: {
       type: DataTypes.INTEGER,
@@ -28,7 +27,7 @@ module.exports = sequelize => {
       comment: null,
       primaryKey: false,
       field: "userid",
-      autoIncrement: false
+      autoIncrement: false,
     },
     cateid: {
       type: DataTypes.INTEGER,
@@ -37,32 +36,42 @@ module.exports = sequelize => {
       comment: null,
       primaryKey: false,
       field: "cateid",
-      autoIncrement: false
+      autoIncrement: false,
     },
     createdAt: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: sequelize.fn('now'),
+      defaultValue: sequelize.fn("now"),
       comment: null,
       primaryKey: false,
       field: "createdAt",
-      autoIncrement: false
+      autoIncrement: false,
     },
     updatedAt: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: sequelize.fn('now'),
+      defaultValue: sequelize.fn("now"),
       comment: null,
       primaryKey: false,
       field: "updatedAt",
-      autoIncrement: false
-    }
+      autoIncrement: false,
+    },
   };
   const options = {
     tableName: "book",
     comment: "",
-    indexes: []
+    indexes: [],
   };
   const BookModel = sequelize.define("book_model", attributes, options);
+  const CateModel = require("./cate")(sequelize);
+  const UserModel = require("./user")(sequelize);
+  BookModel.belongsTo(CateModel, {
+    foreignKey: "cateid",
+  });
+  BookModel.belongsTo(UserModel, {
+    foreignKey: "userid",
+    targetKey: "id",
+  });
+
   return BookModel;
 };
