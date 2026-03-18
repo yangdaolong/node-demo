@@ -1,31 +1,34 @@
-const { DataTypes } = require("sequelize");
-module.exports = (sequelize) => {
+const {
+  DataTypes
+} = require('sequelize');
+module.exports = sequelize => {
   const attributes = {
     id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      defaultValue: null,
       comment: null,
       primaryKey: true,
       field: "id",
-      autoIncrement: true,
+      autoIncrement: true
     },
     username: {
-      type: DataTypes.CHAR,
+      type: DataTypes.CHAR(255),
       allowNull: true,
-      defaultValue: null,
+      defaultValue: "NULL",
       comment: null,
       primaryKey: false,
       field: "username",
-      autoIncrement: false,
+      autoIncrement: false
     },
     password: {
-      type: DataTypes.CHAR,
+      type: DataTypes.CHAR(255),
       allowNull: true,
-      defaultValue: null,
+      defaultValue: "NULL",
       comment: null,
       primaryKey: false,
       field: "password",
-      autoIncrement: false,
+      autoIncrement: false
     },
     num: {
       type: DataTypes.BIGINT,
@@ -34,13 +37,31 @@ module.exports = (sequelize) => {
       comment: null,
       primaryKey: false,
       field: "num",
-      autoIncrement: false,
+      autoIncrement: false
     },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: sequelize.fn('now'),
+      comment: null,
+      primaryKey: false,
+      field: "createdAt",
+      autoIncrement: false
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: sequelize.fn('now'),
+      comment: null,
+      primaryKey: false,
+      field: "updatedAt",
+      autoIncrement: false
+    }
   };
   const options = {
     tableName: "user",
     comment: "",
-    indexes: [],
+    indexes: []
   };
   const UserModel = sequelize.define("user_model", attributes, options);
   return UserModel;

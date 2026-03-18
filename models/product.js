@@ -1,22 +1,25 @@
-const { DataTypes } = require("sequelize");
-module.exports = (sequelize) => {
+const {
+  DataTypes
+} = require('sequelize');
+module.exports = sequelize => {
   const attributes = {
     id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      defaultValue: null,
       comment: null,
       primaryKey: true,
       field: "id",
-      autoIncrement: true,
+      autoIncrement: true
     },
     name: {
       type: DataTypes.CHAR(255),
       allowNull: true,
-      defaultValue: null,
+      defaultValue: "NULL",
       comment: null,
       primaryKey: false,
       field: "name",
-      autoIncrement: false,
+      autoIncrement: false
     },
     price: {
       type: DataTypes.DOUBLE,
@@ -25,13 +28,31 @@ module.exports = (sequelize) => {
       comment: null,
       primaryKey: false,
       field: "price",
-      autoIncrement: false,
+      autoIncrement: false
     },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: sequelize.fn('now'),
+      comment: null,
+      primaryKey: false,
+      field: "createdAt",
+      autoIncrement: false
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: sequelize.fn('now'),
+      comment: null,
+      primaryKey: false,
+      field: "updatedAt",
+      autoIncrement: false
+    }
   };
   const options = {
     tableName: "product",
     comment: "",
-    indexes: [],
+    indexes: []
   };
   const ProductModel = sequelize.define("product_model", attributes, options);
   return ProductModel;
