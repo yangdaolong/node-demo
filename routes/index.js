@@ -6,13 +6,17 @@ const CateModel = require("../models/cate")(sequelize);
 
 const dayjs = require("dayjs");
 
+const auth = require("../middleware/auth.js");
+
 router.get("/", async (ctx, next) => {
   await ctx.render("index", {
     title: "Hello Koa 2!",
   });
 });
 
-router.get("/users", async (ctx, next) => {
+router.get("/users", auth, async (ctx, next) => {
+  console.log(ctx.user);
+
   UserModel.hasMany(BookModel, {
     foreignKey: "userid",
   });
@@ -30,7 +34,7 @@ router.get("/users", async (ctx, next) => {
   });
   global.myGlobalVar = "Hello, xiaoyu!";
 
-  ctx.body = userList;
+  ctx.body = { userList, hostname: ctx.hostname };
 });
 router.get("/useradd", async (ctx, next) => {
   let res = await UserModel.create({
@@ -41,6 +45,8 @@ router.get("/useradd", async (ctx, next) => {
   ctx.body = res;
 });
 router.get("/userUpdate", async (ctx, next) => {
+  let token = ctx.cookies.get("token");
+
   let res = await UserModel.update(
     {
       username: "bailong",
@@ -53,7 +59,7 @@ router.get("/userUpdate", async (ctx, next) => {
       },
     },
   );
-  ctx.body = res;
+  ctx.body = { res, token };
 });
 router.get("/json", async (ctx, next) => {
   let bookList = await BookModel.findAll({

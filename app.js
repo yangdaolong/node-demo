@@ -9,6 +9,7 @@ const logger = require("koa-logger");
 
 const index = require("./routes/index");
 const users = require("./routes/users");
+const oauth = require("./routes/oauth");
 
 // Date.prototype.toJSON = function () {
 //   return dayjs(this).format("YYYY-MM-DD HH:mm:ss");
@@ -44,6 +45,7 @@ app.use(async (ctx, next) => {
 // routes
 app.use(index.routes(), index.allowedMethods());
 app.use(users.routes(), users.allowedMethods());
+app.use(oauth.routes(), oauth.allowedMethods());
 
 // error-handling
 app.on("error", (err, ctx) => {
