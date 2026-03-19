@@ -1,59 +1,17 @@
 const { DataTypes } = require("sequelize");
 module.exports = (sequelize) => {
   const attributes = {
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: null,
-      comment: null,
-      primaryKey: true,
-      field: "id",
-      autoIncrement: true,
-    },
     username: {
-      type: DataTypes.CHAR(255),
-      allowNull: true,
-      defaultValue: "NULL",
-      comment: null,
-      primaryKey: false,
-      field: "username",
-      autoIncrement: false,
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     password: {
-      type: DataTypes.CHAR(255),
+      type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: "NULL",
-      comment: null,
-      primaryKey: false,
-      field: "password",
-      autoIncrement: false,
     },
-    num: {
-      type: DataTypes.BIGINT,
-      allowNull: true,
-      defaultValue: null,
-      comment: null,
-      primaryKey: false,
-      field: "num",
-      autoIncrement: false,
-    },
-    createdAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: sequelize.fn("now"),
-      comment: null,
-      primaryKey: false,
-      field: "createdAt",
-      autoIncrement: false,
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: sequelize.fn("now"),
-      comment: null,
-      primaryKey: false,
-      field: "updatedAt",
-      autoIncrement: false,
+    point: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
     },
   };
   const options = {

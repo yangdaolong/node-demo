@@ -11,6 +11,7 @@
     "createdb": "node ./db/createdatebase.js"
   },
   "dependencies": {
+    "dayjs": "^1.11.20",
     "debug": "^4.1.1",
     "ejs": "~2.3.3",
     "koa": "^2.7.0",
@@ -22,6 +23,7 @@
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",
     "koa-views": "^6.2.0",
+    "mysql2": "^3.20.0",
     "pg": "^8.20.0",
     "sequelize": "^6.37.8",
     "sequelize-automate": "^1.2.2"

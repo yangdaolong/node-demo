@@ -2,15 +2,20 @@ const Sequelize = require("sequelize");
 
 console.log("init sequelize...");
 
-const sequelize = new Sequelize("test", "postgres", "123456", {
+const sequelize = new Sequelize("test", "root", "123456", {
   host: "127.0.0.1", // 数据库地址
-  dialect: "postgres", // 指定数据库类型
+  dialect: "mysql", // 指定数据库类型
   pool: {
     max: 5, // 最大连接数量
     min: 0, // 最小连接数量
     idle: 10000, // 如果一个线程10s内没有被使用过的话就释放
   },
   logging: true, // 显示log
+  timezone: "+08:00",
+  dialectOptions: {
+    dateStrings: true,
+    typeCast: true,
+  },
 });
 
 //对连接进行测试，查看控制台
