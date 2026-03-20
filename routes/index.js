@@ -74,7 +74,7 @@ router.get("/json", async (ctx, next) => {
     ],
   });
 
-  ctx.body = { bookList, myGlobalVar };
+  ctx.body = { bookList };
 });
 
 router.get("/bookadd", async (ctx, next) => {
@@ -83,6 +83,10 @@ router.get("/bookadd", async (ctx, next) => {
     userid: 1,
   });
   ctx.body = res;
+});
+
+router.get("/env", async (ctx, next) => {
+  ctx.body = process.env;
 });
 
 module.exports = router;

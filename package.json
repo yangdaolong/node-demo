@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node bin/www",
-    "dev": "PORT=3001 ./node_modules/.bin/nodemon bin/www",
-    "prd": "PORT=3001 pm2 start bin/www --name node-demo -i max",
+    "dev": "NODE_ENV=dev ./node_modules/.bin/nodemon bin/www",
+    "prd": "NODE_ENV=prd pm2 start bin/www --name node-demo -i max",
     "test": "echo \"Error: no test specified\" && exit 1",
     "sequelize-automate": "sequelize-automate -t js -h localhost -d test -u root -p 123456 -P 3306  -e mysql -o models",
     "createdb": "node ./db/createdatebase.js"
@@ -13,6 +13,7 @@
   "dependencies": {
     "dayjs": "^1.11.20",
     "debug": "^4.1.1",
+    "dotenv": "^17.3.1",
     "ejs": "~2.3.3",
     "jsonwebtoken": "^9.0.3",
     "koa": "^2.7.0",

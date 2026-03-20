@@ -27,7 +27,7 @@ router.post("/login", async (ctx, next) => {
     return;
   }
   // 生成访问令牌
-  const accessToken = jwt.sign(user.toJSON(), "your-secret-key", {
+  const accessToken = jwt.sign(user.toJSON(), process.env.SECRET_KEY, {
     expiresIn: "1h",
   });
   ctx.cookies.set("iehistoken", accessToken, {

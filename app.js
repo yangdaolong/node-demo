@@ -6,6 +6,11 @@ const json = require("koa-json");
 const onerror = require("koa-onerror");
 const bodyparser = require("koa-bodyparser");
 const logger = require("koa-logger");
+const dotenv = require("dotenv");
+dotenv.config();
+dotenv.config({
+  path: process.env.NODE_ENV ? `./.env.${process.env.NODE_ENV}` : ".env",
+});
 
 const index = require("./routes/index");
 const users = require("./routes/users");

@@ -8,7 +8,7 @@ const auth = async (ctx, next) => {
     return;
   }
   try {
-    let user = jwt.verify(token, "your-secret-key");
+    let user = jwt.verify(token, process.env.SECRET_KEY);
     ctx.user = user;
     await next();
   } catch (error) {
