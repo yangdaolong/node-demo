@@ -15,8 +15,6 @@ router.get("/", async (ctx, next) => {
 });
 
 router.get("/users", auth, async (ctx, next) => {
-  console.log(ctx.user);
-
   UserModel.hasMany(BookModel, {
     foreignKey: "userid",
   });

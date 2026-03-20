@@ -13,6 +13,10 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
       defaultValue: 0,
     },
+    level: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
   };
   const options = {
     tableName: "user",
