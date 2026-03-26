@@ -4,6 +4,18 @@ const UserModel = require("../models/user")(sequelize);
 const BookModel = require("../models/book")(sequelize);
 const CateModel = require("../models/cate")(sequelize);
 
+// Define associations once
+UserModel.hasMany(BookModel, {
+  foreignKey: "userid",
+});
+BookModel.belongsTo(CateModel, {
+  foreignKey: "cateid",
+});
+BookModel.belongsTo(UserModel, {
+  foreignKey: "userid",
+  targetKey: "id",
+});
+
 const dayjs = require("dayjs");
 
 const auth = require("../middleware/auth.js");
@@ -15,24 +27,17 @@ router.get("/", async (ctx, next) => {
 });
 
 router.get("/users", auth, async (ctx, next) => {
-  UserModel.hasMany(BookModel, {
-    foreignKey: "userid",
-  });
-
   let userList = await UserModel.findAll({
     include: [
       {
         model: BookModel,
-        include: {
-          model: CateModel,
-        },
       },
     ],
     order: [["id", "ASC"]],
   });
   global.myGlobalVar = "Hello, xiaoyu!";
 
-  ctx.body = { userList, hostname: ctx.hostname };
+  ctx.body = { userList };
 });
 router.get("/useradd", async (ctx, next) => {
   let res = await UserModel.create({
@@ -62,16 +67,18 @@ router.get("/userUpdate", async (ctx, next) => {
 router.get("/json", async (ctx, next) => {
   let bookList = await BookModel.findAll({
     where: {
-      userid: 2,
+      userid: 1,
     },
     include: [
       {
         model: UserModel,
+        attributes: ["username"],
       },
       {
         model: CateModel,
       },
     ],
+    order: [["id", "ASC"]],
   });
 
   ctx.body = { bookList };
@@ -79,7 +86,7 @@ router.get("/json", async (ctx, next) => {
 
 router.get("/bookadd", async (ctx, next) => {
   let res = await BookModel.create({
-    name: "book1",
+    name: "book2",
     userid: 1,
   });
   ctx.body = res;

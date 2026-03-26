@@ -7,18 +7,21 @@ const onerror = require("koa-onerror");
 const bodyparser = require("koa-bodyparser");
 const logger = require("koa-logger");
 const dotenv = require("dotenv");
-dotenv.config();
+
 dotenv.config({
-  path: process.env.NODE_ENV ? `./.env.${process.env.NODE_ENV}` : ".env",
+  path:
+    process.env.NODE_ENV === "dev"
+      ? "./.env"
+      : `./.env.${process.env.NODE_ENV}`,
 });
 
 const index = require("./routes/index");
 const users = require("./routes/users");
 const oauth = require("./routes/oauth");
 
-// Date.prototype.toJSON = function () {
-//   return dayjs(this).format("YYYY-MM-DD HH:mm:ss");
-// };
+Date.prototype.toJSON = function () {
+  return dayjs(this).format("YYYY-MM-DD HH:mm:ss");
+};
 
 // error handler
 onerror(app);
