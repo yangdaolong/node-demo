@@ -9,7 +9,7 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
     },
     cateid: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
     },
   };
   const options = {
@@ -18,6 +18,15 @@ module.exports = (sequelize) => {
     indexes: [],
   };
   const BookModel = sequelize.define("book_model", attributes, options);
+  const CateModel = require("./cate")(sequelize);
+  const UserModel = require("./user")(sequelize);
+  BookModel.belongsTo(CateModel, {
+    foreignKey: "cateid",
+  });
+  BookModel.belongsTo(UserModel, {
+    foreignKey: "userid",
+    targetKey: "id",
+  });
 
   return BookModel;
 };
