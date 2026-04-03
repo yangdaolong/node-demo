@@ -1,10 +1,8 @@
 const dotenv = require("dotenv");
 
 dotenv.config({
-  path:
-    process.env.NODE_ENV === "dev"
-      ? "./.env"
-      : `./.env.${process.env.NODE_ENV}`,
+  path: ["./.env", `./.env.${process.env.NODE_ENV}`],
+  override: true,
 });
 
 const sequelize = require("./seq.js");

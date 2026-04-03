@@ -8,6 +8,14 @@ const dayjs = require("dayjs");
 
 const auth = require("../middleware/auth.js");
 
+BookModel.belongsTo(CateModel, {
+  foreignKey: "cateid",
+});
+BookModel.belongsTo(UserModel, {
+  foreignKey: "userid",
+  targetKey: "id",
+});
+
 router.get("/", async (ctx, next) => {
   await ctx.render("index", {
     title: "Hello Koa 2!",
