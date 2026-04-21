@@ -7,6 +7,7 @@ const CateModel = require("../models/cate")(sequelize);
 const dayjs = require("dayjs");
 
 const auth = require("../middleware/auth.js");
+const jwt = require("jsonwebtoken");
 
 BookModel.belongsTo(CateModel, {
   foreignKey: "cateid",
@@ -36,7 +37,7 @@ router.get("/users", auth, async (ctx, next) => {
   });
   global.myGlobalVar = "Hello, xiaoyu!";
 
-  ctx.body = { userList };
+  ctx.body = { userList, user: ctx.user };
 });
 router.get("/useradd", async (ctx, next) => {
   let res = await UserModel.create(
@@ -120,6 +121,39 @@ router.get("/cateadd", async (ctx, next) => {
     desc: "cate1 desc",
   });
   ctx.body = res;
+});
+
+router.get("/oauth", async (ctx, next) => {
+  await ctx.render("oauth/index", {
+    title: "OAuth",
+  });
+});
+router.post("/oauth/login", async (ctx, next) => {
+  console.log(ctx.request.body);
+
+  let user = await UserModel.findOne({
+    where: {
+      username: ctx.request.body.username,
+      password: ctx.request.body.password,
+    },
+  });
+  if (user) {
+    // 生成访问令牌
+    const accessToken = jwt.sign(
+      { id: user.id, username: user.username },
+      process.env.SECRET_KEY,
+      {
+        expiresIn: "1h",
+      },
+    );
+    ctx.cookies.set("iehistoken", accessToken, {
+      httpOnly: true,
+    });
+    // next("/users");
+    ctx.body = { accessToken };
+  } else {
+    ctx.body = { error: "用户名或密码错误" };
+  }
 });
 
 module.exports = router;

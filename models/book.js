@@ -9,7 +9,7 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
     },
     cateid: {
-      type: DataTypes.UUID,
+      type: DataTypes.INTEGER,
     },
   };
   const options = {

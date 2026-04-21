@@ -8,7 +8,7 @@
     "dev:pgs": "NODE_ENV=pgs ./node_modules/.bin/nodemon bin/www",
     "prd": "NODE_ENV=prd pm2 start bin/www --name node-demo -i max",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "sequelize-automate": "sequelize-automate -t js -h localhost -d test -u root -p 123456 -P 3306  -e mysql -o models",
+    "sequelize-automate": "sequelize-automate -t js -h localhost -d test -u postgres -p 123456 -P 5432  -e postgres -o models",
     "createdb": "NODE_ENV=pgs node ./db/createdatebase.js"
   },
   "dependencies": {
