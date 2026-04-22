@@ -10,8 +10,35 @@ router.get("/", async (ctx, next) => {
     title: "OAuth",
   });
 });
-
+/**
+ * @swagger
+ * /oauth/login:
+ *   post:
+ *     summary: 登录
+ *     description: 登录获取访问令牌
+ *     tags:
+ *       - 认证
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 default: bailong
+ *               password:
+ *                 type: string
+ *                 default: 123456
+ *     responses:
+ *       200:
+ *         description: 成功返回访问令牌
+ *         schema:
+ *           type: object
+ */
 router.post("/login", async (ctx, next) => {
+  console.log(ctx.request);
   let { username, password } = ctx.request.body;
 
   let user = await UserModel.findOne({
@@ -19,6 +46,7 @@ router.post("/login", async (ctx, next) => {
       username,
       password,
     },
+    attributes: ["id", "username", "point", "level"],
   });
 
   if (!user) {
@@ -30,12 +58,27 @@ router.post("/login", async (ctx, next) => {
   const accessToken = jwt.sign(user.toJSON(), process.env.SECRET_KEY, {
     expiresIn: "1h",
   });
+
   ctx.cookies.set("iehistoken", accessToken, {
     httpOnly: true,
+    domain: ctx.request.origin.match(/\/(.*)$/)[1],
   });
-  ctx.body = user;
+  ctx.body = { user: user.toJSON(), accessToken };
 });
-
+/**
+ * @swagger
+ * /oauth/my:
+ *  get:
+ *     summary: 获取当前用户信息
+ *     description: 获取当前登录用户的信息
+ *     tags:
+ *       - 认证
+ *     responses:
+ *      200:
+ *        description: 成功返回当前用户信息
+ *        schema:
+ *          type: object
+ */
 router.get("/my", auth, async (ctx, next) => {
   ctx.body = ctx.user;
 });

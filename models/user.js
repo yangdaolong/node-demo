@@ -7,7 +7,7 @@ module.exports = (sequelize) => {
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
     },
     point: {
       type: DataTypes.INTEGER,

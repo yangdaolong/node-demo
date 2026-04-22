@@ -7,15 +7,24 @@ const onerror = require("koa-onerror");
 const bodyparser = require("koa-bodyparser");
 const logger = require("koa-logger");
 const dotenv = require("dotenv");
-
+const swagger = require("koa2-swagger-ui");
+const cors = require("@koa/cors");
+app.use(
+  cors({
+    origin: (ctx) => {
+      const origin = ctx.headers.origin; // 实际生产请根据具体情况来进行规则配置
+      return origin;
+    },
+    credentials: true,
+  }),
+);
 dotenv.config({
   path: ["./.env", `./.env.${process.env.NODE_ENV}`],
   override: true,
 });
-
+const oauth = require("./routes/oauth");
 const index = require("./routes/index");
 const users = require("./routes/users");
-const oauth = require("./routes/oauth");
 
 Date.prototype.toJSON = function () {
   return dayjs(this).format("YYYY-MM-DD HH:mm:ss");

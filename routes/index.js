@@ -8,6 +8,8 @@ const dayjs = require("dayjs");
 
 const auth = require("../middleware/auth.js");
 const jwt = require("jsonwebtoken");
+const swaggerUI = require("koa2-swagger-ui").koaSwagger;
+const swaggerSpec = require("../swagger");
 
 BookModel.belongsTo(CateModel, {
   foreignKey: "cateid",
@@ -23,6 +25,37 @@ router.get("/", async (ctx, next) => {
   });
 });
 
+/**
+ * @swagger
+ * /users:
+ *   get:
+ *     summary: 获取用户列表
+ *     description: 获取所有用户列表
+ *     tags:
+ *       - 用户
+ *     responses:
+ *      200:
+ *        description: 成功返回用户列表
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                type: object
+ *                properties:
+ *                  id:
+ *                    type: integer
+ *                    description: 用户 ID
+ *                  username:
+ *                    type: string
+ *                    description: 用户名
+ *                  book_models:
+ *                    type: array
+ *                    description: 用户的书籍列表
+ *                    items:
+ *                      type: object
+ *
+ * */
 router.get("/users", auth, async (ctx, next) => {
   UserModel.hasMany(BookModel, {
     foreignKey: "userid",
@@ -39,51 +72,147 @@ router.get("/users", auth, async (ctx, next) => {
 
   ctx.body = { userList, user: ctx.user };
 });
-router.get("/useradd", async (ctx, next) => {
-  let res = await UserModel.create(
+/**
+ * @swagger
+ * /useradd:
+ *   post:
+ *     summary: 添加用户
+ *     description: 添加用户到数据库
+ *     tags:
+ *       - 用户
+ *     parameters:
+ *       - name: username
+ *         in: query
+ *         required: true
+ *         type: string
+ *         description: 用户名
+ *       - name: password
+ *         in: query
+ *         required: true
+ *         type: string
+ *         description: 密码
+ *       - name: point
+ *         required: true
+ *         in: query
+ *         type: integer
+ *         description: 积分
+ *       - name: level
+ *         in: query
+ *         required: true
+ *         type: integer
+ *         description: 数等级
+ *     responses:
+ *       200:
+ *         description: 成功返回添加的用户
+ *         schema:
+ *           type: object
+ */
+router.post("/useradd", async (ctx, next) => {
+  let { username, password, point, level } = ctx.request.query;
+
+  let res = await UserModel.create({
+    username,
+    password,
+    point,
+    level,
+  });
+  ctx.body = res;
+});
+/**
+ * @swagger
+ * /userUpdate:
+ *  post:
+ *   summary: 更新用户信息
+ *   description: 根据用户ID更新用户信息
+ *   tags:
+ *     - 用户
+ *   parameters:
+ *     - name: id
+ *       in: query
+ *       required: true
+ *       type: integer
+ *       description: 用户ID
+ *     - name: username
+ *       in: query
+ *       required: true
+ *       type: string
+ *       description: 用户名
+ *     - name: password
+ *       in: query
+ *       required: true
+ *       type: string
+ *       description: 密码
+ *     - name: point
+ *       required: true
+ *       in: query
+ *       type: integer
+ *       description: 积分
+ *     - name: level
+ *       required: true
+ *       in: query
+ *       type: integer
+ *       description: 数等级
+ *   responses:
+ *     200:
+ *       description: 成功更新用户信息
+ *       schema:
+ *         type: object
+ * */
+router.post("/userUpdate", async (ctx, next) => {
+  let { id, username, password, point, level } = ctx.request.query;
+  let res = await UserModel.update(
     {
-      username: "bailong",
-      password: "123456",
-      point: 0,
-      level: 1,
-      book_models: [
-        {
-          name: "book1",
-        },
-        {
-          name: "book2",
-        },
-      ],
+      username,
+      password,
+      point,
+      level,
     },
     {
-      include: [
-        {
-          model: BookModel,
-        },
-      ],
-      order: [["id", "ASC"]],
+      where: {
+        id,
+      },
     },
   );
   ctx.body = res;
 });
-router.get("/userUpdate", async (ctx, next) => {
-  let token = ctx.cookies.get("token");
-
-  let res = await UserModel.update(
-    {
-      username: "bailong",
-      password: "111111",
-      point: 110,
-    },
-    {
-      where: {
-        id: 1,
-      },
-    },
-  );
-  ctx.body = { res, token };
-});
-router.get("/json", async (ctx, next) => {
+/**
+ * @swagger
+ * /books:
+ *  get:
+ *   summary: 获取书籍列表
+ *   description: 获取所有书籍列表
+ *   tags:
+ *     - 书籍
+ *   responses:
+ *    200:
+ *      description: 成功返回书籍列表
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: array
+ *            items:
+ *              type: object
+ *              properties:
+ *                id:
+ *                  type: integer
+ *                  description: 书籍 ID
+ *                name:
+ *                  type: string
+ *                  description: 书籍名称
+ *                userid:
+ *                  type: integer
+ *                  description: 用户 ID
+ *                cateid:
+ *                  type: integer
+ *                  description: 分类 ID
+ *                created_at:
+ *                  type: string
+ *                  description: 创建时间
+ *                updated_at:
+ *                  type: string
+ *                  description: 更新时间
+ */
+router.get("/books", async (ctx, next) => {
   let bookList = await BookModel.findAll({
     where: {
       // userid: 1,
@@ -100,60 +229,95 @@ router.get("/json", async (ctx, next) => {
     order: [["id", "ASC"]],
   });
 
-  ctx.body = { bookList };
+  ctx.body = bookList;
 });
-
-router.get("/bookadd", async (ctx, next) => {
+/**
+ * @swagger
+ * /bookadd:
+ *  post:
+ *   summary: 添加书籍
+ *   description: 添加书籍到数据库
+ *   tags:
+ *     - 书籍
+ *   parameters:
+ *     - name: name
+ *       in: query
+ *       required: true
+ *       type: string
+ *       description: 书籍名称
+ *     - name: userid
+ *       in: query
+ *       required: true
+ *       type: integer
+ *       description: 用户 ID
+ *     - name: cateid
+ *       in: query
+ *       required: true
+ *       type: integer
+ *       description: 分类 ID
+ *   responses:
+ *     200:
+ *       description: 成功返回添加的书籍
+ *       schema:
+ *         type: object
+ */
+router.post("/bookadd", async (ctx, next) => {
+  let { name, userid, cateid } = ctx.request.query;
   let res = await BookModel.create({
-    name: "book2",
-    userid: 1,
+    name,
+    userid,
+    cateid,
   });
   ctx.body = res;
 });
-
-router.get("/env", async (ctx, next) => {
-  ctx.body = process.env;
-});
-
-router.get("/cateadd", async (ctx, next) => {
+/**
+ * @swagger
+ * /cateadd:
+ *  post:
+ *    summary: 添加分类
+ *    description: 添加分类到数据库
+ *    tags:
+ *      - 书籍
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              label:
+ *                type: string
+ *                description: 分类名称
+ *                default: 默认分类
+ *              desc:
+ *                type: string
+ *                description: 分类描述
+ *                default: 默认分类描述
+ *    responses:
+ *      200:
+ *        description: 成功返回添加的分类
+ *        schema:
+ *          type: object
+ */
+router.post("/cateadd", async (ctx, next) => {
+  let { label, desc } = ctx.request.body;
   let res = await CateModel.create({
-    label: "cate1",
-    desc: "cate1 desc",
+    label,
+    desc,
   });
   ctx.body = res;
 });
 
-router.get("/oauth", async (ctx, next) => {
-  await ctx.render("oauth/index", {
-    title: "OAuth",
-  });
-});
-router.post("/oauth/login", async (ctx, next) => {
-  console.log(ctx.request.body);
-
-  let user = await UserModel.findOne({
-    where: {
-      username: ctx.request.body.username,
-      password: ctx.request.body.password,
+router.get(
+  "/docs",
+  swaggerUI({
+    routePrefix: false,
+    swaggerOptions: {
+      spec: swaggerSpec,
+      showRequestHeaders: true,
+      withCredentials: true,
     },
-  });
-  if (user) {
-    // 生成访问令牌
-    const accessToken = jwt.sign(
-      { id: user.id, username: user.username },
-      process.env.SECRET_KEY,
-      {
-        expiresIn: "1h",
-      },
-    );
-    ctx.cookies.set("iehistoken", accessToken, {
-      httpOnly: true,
-    });
-    // next("/users");
-    ctx.body = { accessToken };
-  } else {
-    ctx.body = { error: "用户名或密码错误" };
-  }
-});
+  }),
+);
 
 module.exports = router;
