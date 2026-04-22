@@ -22,14 +22,6 @@ const options = {
         url: "http://localhost:3001",
         description: "本地服务器",
       },
-      {
-        url: "http://127.0.0.1:3001",
-        description: "本地服务器",
-      },
-      {
-        url: "http://api.test.com:3001",
-        description: "本地服务器",
-      },
     ],
   },
   apis: ["./routes/*.js"], // 指定 API 路由文件路径

@@ -58,9 +58,9 @@ app.use(async (ctx, next) => {
 });
 
 // routes
+app.use(oauth.routes(), oauth.allowedMethods());
 app.use(index.routes(), index.allowedMethods());
 app.use(users.routes(), users.allowedMethods());
-app.use(oauth.routes(), oauth.allowedMethods());
 
 // error-handling
 app.on("error", (err, ctx) => {

@@ -58,10 +58,16 @@ router.post("/login", async (ctx, next) => {
   const accessToken = jwt.sign(user.toJSON(), process.env.SECRET_KEY, {
     expiresIn: "1h",
   });
-
+  let domain = ctx.request.header.origin.match(
+    /http:\/\/([\w\.]+)(:\d+)?\/?/,
+  )[1];
+  if (domain !== "localhost") {
+    domain = domain.split(".");
+    domain = domain[domain.length - 2] + "." + domain[domain.length - 1];
+  }
   ctx.cookies.set("iehistoken", accessToken, {
     httpOnly: true,
-    domain: ctx.request.origin.match(/\/(.*)$/)[1],
+    domain: domain,
   });
   ctx.body = { user: user.toJSON(), accessToken };
 });
