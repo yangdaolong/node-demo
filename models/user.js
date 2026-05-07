@@ -1,27 +1,83 @@
 const { DataTypes } = require("sequelize");
 module.exports = (sequelize) => {
   const attributes = {
-    username: {
-      type: DataTypes.STRING,
+    id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
+      comment: null,
+      primaryKey: true,
+      field: "id",
+      autoIncrement: true,
+    },
+    username: {
+      type: DataTypes.CHAR(255),
+      allowNull: false,
+      defaultValue: null,
+      comment: null,
+      primaryKey: false,
+      field: "username",
+      autoIncrement: false,
     },
     password: {
-      type: DataTypes.STRING,
-      allowNull: false,
+      type: DataTypes.CHAR(255),
+      allowNull: true,
+      defaultValue: null,
+      comment: null,
+      primaryKey: false,
+      field: "password",
+      autoIncrement: false,
     },
     point: {
       type: DataTypes.INTEGER,
-      defaultValue: 0,
+      allowNull: true,
+      defaultValue: "0",
+      comment: null,
+      primaryKey: false,
+      field: "point",
+      autoIncrement: false,
     },
     level: {
       type: DataTypes.INTEGER,
-      defaultValue: 0,
+      allowNull: true,
+      defaultValue: "0",
+      comment: null,
+      primaryKey: false,
+      field: "level",
+      autoIncrement: false,
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: null,
+      comment: null,
+      primaryKey: false,
+      field: "createdAt",
+      autoIncrement: false,
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: null,
+      comment: null,
+      primaryKey: false,
+      field: "updatedAt",
+      autoIncrement: false,
+    },
+    deletedAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: null,
+      comment: null,
+      primaryKey: false,
+      field: "deletedAt",
+      autoIncrement: false,
     },
   };
   const options = {
     tableName: "user",
     comment: "",
     indexes: [],
+    paranoid: true,
   };
   const UserModel = sequelize.define("user_model", attributes, options);
 

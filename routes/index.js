@@ -1,19 +1,6 @@
 const router = require("koa-router")();
-const sequelize = require("../db/seq.js");
-const UserModel = require("../models/user")(sequelize);
-const BookModel = require("../models/book")(sequelize);
-const CateModel = require("../models/cate")(sequelize);
-UserModel.hasMany(BookModel, {
-  foreignKey: "userid",
-});
-BookModel.belongsTo(UserModel, {
-  foreignKey: "userid",
-  targetKey: "id",
-  onDelete: "CASCADE",
-});
-BookModel.belongsTo(CateModel, {
-  foreignKey: "cateid",
-});
+
+const { UserModel, BookModel, CateModel } = require("../models/index.js");
 
 const dayjs = require("dayjs");
 
@@ -177,6 +164,36 @@ router.post("/userUpdate", async (ctx, next) => {
 });
 /**
  * @swagger
+ * /userdelete:
+ *  get:
+ *   summary: 删除用户
+ *   description: 根据用户ID删除用户
+ *   tags:
+ *     - 用户
+ *   parameters:
+ *     - name: id
+ *       in: query
+ *       required: true
+ *       type: integer
+ *       description: 用户ID
+ *   responses:
+ *     200:
+ *       description: 成功删除用户
+ *       schema:
+ *         type: object
+ */
+router.get("/userdelete", async function (ctx, next) {
+  let { id } = ctx.request.query;
+  let res = await UserModel.destroy({
+    where: {
+      id,
+    },
+  });
+  ctx.body = res;
+});
+
+/**
+ * @swagger
  * /books:
  *  get:
  *   summary: 获取书籍列表
@@ -245,16 +262,16 @@ router.get("/books", async (ctx, next) => {
  *       required: true
  *       type: string
  *       description: 书籍名称
- *     - name: userid
+ *     - name: username
  *       in: query
  *       required: true
- *       type: integer
- *       description: 用户 ID
- *     - name: cateid
+ *       type: string
+ *       description: 用户名
+ *     - name: label
  *       in: query
  *       required: true
- *       type: integer
- *       description: 分类 ID
+ *       type: string
+ *       description: 分类名称
  *   responses:
  *     200:
  *       description: 成功返回添加的书籍
@@ -262,15 +279,18 @@ router.get("/books", async (ctx, next) => {
  *         type: object
  */
 router.post("/bookadd", async (ctx, next) => {
-  let { name, userid, cateid } = ctx.request.query;
+  let { name, username, label } = ctx.request.query;
   let res = await BookModel.create(
     {
       name,
       user_model: {
-        username: userid,
-        password: userid,
+        username: username,
+        password: username,
       },
-      cateid,
+      cate_model: {
+        label: label,
+        desc: label,
+      },
     },
     {
       include: [
