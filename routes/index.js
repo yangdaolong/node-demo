@@ -3,6 +3,17 @@ const sequelize = require("../db/seq.js");
 const UserModel = require("../models/user")(sequelize);
 const BookModel = require("../models/book")(sequelize);
 const CateModel = require("../models/cate")(sequelize);
+UserModel.hasMany(BookModel, {
+  foreignKey: "userid",
+});
+BookModel.belongsTo(UserModel, {
+  foreignKey: "userid",
+  targetKey: "id",
+  onDelete: "CASCADE",
+});
+BookModel.belongsTo(CateModel, {
+  foreignKey: "cateid",
+});
 
 const dayjs = require("dayjs");
 
@@ -10,14 +21,6 @@ const auth = require("../middleware/auth.js");
 const jwt = require("jsonwebtoken");
 const swaggerUI = require("koa2-swagger-ui").koaSwagger;
 const swaggerSpec = require("../swagger");
-
-BookModel.belongsTo(CateModel, {
-  foreignKey: "cateid",
-});
-BookModel.belongsTo(UserModel, {
-  foreignKey: "userid",
-  targetKey: "id",
-});
 
 router.get("/", async (ctx, next) => {
   await ctx.render("index", {
@@ -56,10 +59,7 @@ router.get("/", async (ctx, next) => {
  *                      type: object
  *
  * */
-router.get("/users", auth, async (ctx, next) => {
-  UserModel.hasMany(BookModel, {
-    foreignKey: "userid",
-  });
+router.get("/users", async (ctx, next) => {
   let userList = await UserModel.findAll({
     include: [
       {
@@ -263,11 +263,26 @@ router.get("/books", async (ctx, next) => {
  */
 router.post("/bookadd", async (ctx, next) => {
   let { name, userid, cateid } = ctx.request.query;
-  let res = await BookModel.create({
-    name,
-    userid,
-    cateid,
-  });
+  let res = await BookModel.create(
+    {
+      name,
+      user_model: {
+        username: userid,
+        password: userid,
+      },
+      cateid,
+    },
+    {
+      include: [
+        {
+          model: UserModel,
+        },
+        {
+          model: CateModel,
+        },
+      ],
+    },
+  );
   ctx.body = res;
 });
 /**

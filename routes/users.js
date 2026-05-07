@@ -1,13 +1,15 @@
-const router = require('koa-router')()
+const router = require("koa-router")();
+const sequelize = require("../db/seq.js");
+const UserModel = require("../models/user")(sequelize);
+router.prefix("/users");
 
-router.prefix('/users')
+router.get("/", function (ctx, next) {
+  ctx.body = "this is a users response!";
+});
 
-router.get('/', function (ctx, next) {
-  ctx.body = 'this is a users response!'
-})
+router.get("/bar", async function (ctx, next) {
+  let res = await UserModel.findAll();
+  ctx.body = res;
+});
 
-router.get('/bar', function (ctx, next) {
-  ctx.body = 'this is a users/bar response'
-})
-
-module.exports = router
+module.exports = router;
