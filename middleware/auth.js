@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
 
 const auth = async (ctx, next) => {
   let token = ctx.cookies.get("iehistoken");
@@ -18,4 +18,4 @@ const auth = async (ctx, next) => {
   }
 };
 
-module.exports = auth;
+export default auth;

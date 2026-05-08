@@ -51,6 +51,4 @@ sequelize
     );
   });
 
-module.exports = sequelize;
-
-// export default sequelize;
+export default sequelize;

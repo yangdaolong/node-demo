@@ -1,4 +1,4 @@
-const swaggerJsdoc = require("swagger-jsdoc");
+import swaggerJsdoc from "swagger-jsdoc";
 
 const options = {
   definition: {
@@ -27,4 +27,5 @@ const options = {
   apis: ["./routes/*.js"], // 指定 API 路由文件路径
 };
 const swaggerSpec = swaggerJsdoc(options);
-module.exports = swaggerSpec;
+
+export default swaggerSpec;

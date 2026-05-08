@@ -1,4 +1,4 @@
-const sequelize = require("../db/seq.js");
+import sequelize from "../db/seq.js";
 
 const UserModel = require("./user.js")(sequelize);
 const BookModel = require("./book.js")(sequelize);

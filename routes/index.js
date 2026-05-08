@@ -1,13 +1,9 @@
-const router = require("koa-router")();
+import router_ from "koa-router";
+const router = router_();
 
+import { koaSwagger } from "koa2-swagger-ui";
 import { BookModel, CateModel, UserModel } from "../models/index.js";
-
-const dayjs = require("dayjs");
-
-const auth = require("../middleware/auth.js");
-const jwt = require("jsonwebtoken");
-const swaggerUI = require("koa2-swagger-ui").koaSwagger;
-const swaggerSpec = require("../swagger");
+import swaggerSpec from "../swagger";
 
 router.get("/", async (ctx, next) => {
   await ctx.render("index", {
@@ -345,7 +341,7 @@ router.post("/cateadd", async (ctx, next) => {
 
 router.get(
   "/docs",
-  swaggerUI({
+  koaSwagger({
     routePrefix: false,
     swaggerOptions: {
       spec: swaggerSpec,
@@ -355,4 +351,5 @@ router.get(
   }),
 );
 
-module.exports = router;
+// module.exports = router;
+export default router;

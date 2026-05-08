@@ -1,6 +1,6 @@
-const router = require("koa-router")();
-const sequelize = require("../db/seq.js");
-const UserModel = require("../models/user")(sequelize);
+import router_ from "koa-router";
+import { UserModel } from "../models/index.js";
+const router = router_();
 router.prefix("/users");
 
 router.get("/", function (ctx, next) {
@@ -12,4 +12,4 @@ router.get("/bar", async function (ctx, next) {
   ctx.body = res;
 });
 
-module.exports = router;
+export default router;

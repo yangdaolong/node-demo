@@ -1,9 +1,10 @@
-const sequelize = require("../db/seq.js");
-const UserModel = require("../models/user.js")(sequelize);
-const router = require("koa-router")();
+import jwt from "jsonwebtoken";
+import router_ from "koa-router";
+import auth from "../middleware/auth.js";
+import { UserModel } from "../models/index.js";
+
+const router = router_();
 router.prefix("/oauth");
-const jwt = require("jsonwebtoken");
-const auth = require("../middleware/auth.js");
 
 router.get("/", async (ctx, next) => {
   await ctx.render("oauth/index", {
@@ -89,4 +90,4 @@ router.get("/my", auth, async (ctx, next) => {
   ctx.body = ctx.user;
 });
 
-module.exports = router;
+export default router;

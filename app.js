@@ -1,14 +1,15 @@
-const Koa = require("koa");
-const dayjs = require("dayjs");
+import cors from "@koa/cors";
+import dayjs from "dayjs";
+import Koa from "koa";
+import bodyparser from "koa-bodyparser";
+import json from "koa-json";
+import logger from "koa-logger";
+import onerror from "koa-onerror";
+import views from "koa-views";
+import index from "./routes/index";
+import oauth from "./routes/oauth";
+import users from "./routes/users";
 const app = new Koa();
-const views = require("koa-views");
-const json = require("koa-json");
-const onerror = require("koa-onerror");
-const bodyparser = require("koa-bodyparser");
-const logger = require("koa-logger");
-const dotenv = require("dotenv");
-const swagger = require("koa2-swagger-ui");
-const cors = require("@koa/cors");
 app.use(
   cors({
     origin: (ctx) => {
@@ -18,13 +19,6 @@ app.use(
     credentials: true,
   }),
 );
-// dotenv.config({
-//   path: ["./.env", `./.env.${process.env.NODE_ENV}`],
-//   override: true,
-// });
-const oauth = require("./routes/oauth");
-const index = require("./routes/index");
-const users = require("./routes/users");
 
 Date.prototype.toJSON = function () {
   return dayjs(this).format("YYYY-MM-DD HH:mm:ss");
