@@ -19,19 +19,17 @@ router.get("/", async (ctx, next) => {
  *     description: 登录获取访问令牌
  *     tags:
  *       - 认证
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               username:
- *                 type: string
- *                 default: bailong
- *               password:
- *                 type: string
- *                 default: 123456
+ *     parameters:
+ *       - name: username
+ *         in: query
+ *         required: true
+ *         type: string
+ *         description: 用户名
+ *       - name: password
+ *         in: query
+ *         required: true
+ *         type: string
+ *         description: 密码
  *     responses:
  *       200:
  *         description: 成功返回访问令牌
@@ -40,7 +38,7 @@ router.get("/", async (ctx, next) => {
  */
 router.post("/login", async (ctx, next) => {
   console.log(ctx.request);
-  let { username, password } = ctx.request.body;
+  let { username, password } = ctx.request.query;
 
   let user = await UserModel.findOne({
     where: {
