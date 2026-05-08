@@ -3,6 +3,7 @@ import sequelize from "../db/seq.js";
 const UserModel = require("./user.js")(sequelize);
 const BookModel = require("./book.js")(sequelize);
 const CateModel = require("./cate.js")(sequelize);
+const PanModel = require("./pan.js")(sequelize);
 // 在这里定义模型之间的关系
 
 UserModel.hasMany(BookModel, {
@@ -22,4 +23,4 @@ CateModel.hasMany(BookModel, {
   onDelete: "CASCADE",
 });
 
-export { BookModel, CateModel, sequelize, UserModel };
+export { BookModel, CateModel, PanModel, sequelize, UserModel };

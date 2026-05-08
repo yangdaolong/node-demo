@@ -8,7 +8,7 @@ import onerror from "koa-onerror";
 import views from "koa-views";
 import index from "./routes/index";
 import oauth from "./routes/oauth";
-import users from "./routes/users";
+import pan from "./routes/pan";
 const app = new Koa();
 app.use(
   cors({
@@ -54,7 +54,7 @@ app.use(async (ctx, next) => {
 // routes
 app.use(oauth.routes(), oauth.allowedMethods());
 app.use(index.routes(), index.allowedMethods());
-app.use(users.routes(), users.allowedMethods());
+app.use(pan.routes(), pan.allowedMethods());
 
 // error-handling
 app.on("error", (err, ctx) => {

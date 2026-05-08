@@ -1,13 +1,14 @@
-const { DataTypes } = require("sequelize");
+const { DataTypes, UUIDV4 } = require("sequelize");
 module.exports = (sequelize) => {
   const attributes = {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       comment: null,
       primaryKey: true,
       field: "id",
-      autoIncrement: true,
+      autoIncrement: false,
+      defaultValue: DataTypes.UUIDV4,
     },
     name: {
       type: DataTypes.CHAR(255),
@@ -20,11 +21,11 @@ module.exports = (sequelize) => {
     },
   };
   const options = {
-    tableName: "book",
+    tableName: "pan",
     comment: "",
     indexes: [],
   };
-  const BookModel = sequelize.define("book_model", attributes, options);
+  const PanModel = sequelize.define("pan_model", attributes, options);
 
-  return BookModel;
+  return PanModel;
 };
