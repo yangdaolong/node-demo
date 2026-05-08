@@ -18,10 +18,10 @@ app.use(
     credentials: true,
   }),
 );
-dotenv.config({
-  path: ["./.env", `./.env.${process.env.NODE_ENV}`],
-  override: true,
-});
+// dotenv.config({
+//   path: ["./.env", `./.env.${process.env.NODE_ENV}`],
+//   override: true,
+// });
 const oauth = require("./routes/oauth");
 const index = require("./routes/index");
 const users = require("./routes/users");

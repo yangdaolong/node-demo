@@ -1,12 +1,4 @@
-const dotenv = require("dotenv");
-
-dotenv.config({
-  path: ["./.env", `./.env.${process.env.NODE_ENV}`],
-  override: true,
-});
-
-const sequelize = require("./seq.js");
-const { UserModel, CateModel, BookModel } = require("../models/index.js"); //引入模型
+import { sequelize } from "../models/index.js"; //引入模型
 
 (async () => {
   await sequelize.sync({

@@ -1,5 +1,9 @@
-const Sequelize = require("sequelize");
-
+import dotenv from "dotenv";
+import Sequelize from "sequelize";
+dotenv.config({
+  path: ["./.env", `./.env.${process.env.NODE_ENV}`],
+  override: true,
+});
 console.log("init sequelize...");
 
 const sequelize = new Sequelize(
@@ -48,3 +52,5 @@ sequelize
   });
 
 module.exports = sequelize;
+
+// export default sequelize;

@@ -51,6 +51,7 @@ module.exports = (sequelize) => {
     comment: "",
     indexes: [],
   };
+
   const UserModel = sequelize.define("user_model", attributes, options);
 
   return UserModel;

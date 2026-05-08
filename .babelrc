@@ -1,0 +1,3 @@
+{
+    "presets": ["@babel/preset-env"]      // 启用 babel 环境
+}

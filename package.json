@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "node bin/www",
-    "dev": "NODE_ENV=dev ./node_modules/.bin/nodemon bin/www",
-    "dev:pgs": "NODE_ENV=pgs ./node_modules/.bin/nodemon bin/www",
-    "prd": "NODE_ENV=prd pm2 start bin/www --name node-demo",
+    "start": "babel-node bin/www",
+    "dev": "NODE_ENV=dev ./node_modules/.bin/nodemon bin/www --exec babel-node",
+    "dev:pgs": "NODE_ENV=pgs ./node_modules/.bin/nodemon bin/www --exec babel-node",
+    "prd": "NODE_ENV=prd pm2 start bin/www --name node-demo --exec babel-node",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "sequelize-automate": "sequelize-automate -t js -h localhost -d test -u postgres -p 123456 -P 5432  -e postgres -o models",
-    "createdb": "NODE_ENV=pgs node ./db/createdatebase.js"
+    "sequelize-automate": "sequelize-automate -t midway -h localhost -d test -u postgres -p 123456 -P 5432  -e postgres -o models",
+    "createdb": "NODE_ENV=pgs babel-node ./db/createdatebase.js"
   },
   "dependencies": {
     "@koa/cors": "^5.0.0",
@@ -27,14 +27,17 @@
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",
     "koa-views": "^6.2.0",
-    "mysql2": "^3.20.0",
     "pg": "^8.20.0",
-    "sequelize": "^6.37.8",
-    "sequelize-automate": "^1.2.2"
+    "koa2-swagger-ui": "^5.12.0",
+    "swagger-jsdoc": "^6.2.8",
+    "sequelize": "^6.37.8"
   },
   "devDependencies": {
-    "koa2-swagger-ui": "^5.12.0",
+    "@babel/cli": "^7.28.6",
+    "@babel/core": "^7.29.0",
+    "@babel/node": "^7.29.0",
+    "@babel/preset-env": "^7.29.5",
     "nodemon": "^1.19.1",
-    "swagger-jsdoc": "^6.2.8"
+    "sequelize-automate": "^1.2.2"
   }
 }

@@ -22,8 +22,4 @@ CateModel.hasMany(BookModel, {
   onDelete: "CASCADE",
 });
 
-module.exports = {
-  UserModel,
-  BookModel,
-  CateModel,
-};
+export { BookModel, CateModel, sequelize, UserModel };

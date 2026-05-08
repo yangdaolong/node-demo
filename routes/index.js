@@ -1,6 +1,6 @@
 const router = require("koa-router")();
 
-const { UserModel, BookModel, CateModel } = require("../models/index.js");
+import { BookModel, CateModel, UserModel } from "../models/index.js";
 
 const dayjs = require("dayjs");
 
