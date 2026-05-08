@@ -6,7 +6,7 @@
     "start": "node bin/www",
     "dev": "NODE_ENV=dev ./node_modules/.bin/nodemon bin/www",
     "dev:pgs": "NODE_ENV=pgs ./node_modules/.bin/nodemon bin/www",
-    "prd": "NODE_ENV=prd pm2 start bin/www --name node-demo -i max",
+    "prd": "NODE_ENV=prd pm2 start bin/www --name node-demo",
     "test": "echo \"Error: no test specified\" && exit 1",
     "sequelize-automate": "sequelize-automate -t js -h localhost -d test -u postgres -p 123456 -P 5432  -e postgres -o models",
     "createdb": "NODE_ENV=pgs node ./db/createdatebase.js"

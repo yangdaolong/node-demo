@@ -45,39 +45,11 @@ module.exports = (sequelize) => {
       field: "level",
       autoIncrement: false,
     },
-    createdAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: null,
-      comment: null,
-      primaryKey: false,
-      field: "createdAt",
-      autoIncrement: false,
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: null,
-      comment: null,
-      primaryKey: false,
-      field: "updatedAt",
-      autoIncrement: false,
-    },
-    deletedAt: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      defaultValue: null,
-      comment: null,
-      primaryKey: false,
-      field: "deletedAt",
-      autoIncrement: false,
-    },
   };
   const options = {
     tableName: "user",
     comment: "",
     indexes: [],
-    paranoid: true,
   };
   const UserModel = sequelize.define("user_model", attributes, options);
 
