@@ -43,7 +43,7 @@ router.get("/", async function (ctx, next) {
  *       schema:
  *         type: object
  */
-router.post("/pan", async function (ctx, next) {
+router.post("/", async function (ctx, next) {
   let { name } = ctx.request.query;
   let res = await PanModel.create({
     name,
